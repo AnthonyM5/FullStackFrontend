@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { welcome, randomGif, searchGif } from '../apiServices';
-
-
+import { welcome, searchGif } from '../apiServices';
+import Gifs from "./gifs";
 
 
 
@@ -18,8 +17,12 @@ const Welcome = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        searchGif(query);
-      
+
+        const search = async () => {
+            let json = await searchGif(query);
+            setGifs(json.data)
+        }
+        search();
     }
 
 
@@ -32,13 +35,13 @@ const Welcome = () => {
         getMessage()
     }, [])
 
-    useEffect(() => {
-        const getGif = async () => {
-            let json = await randomGif();
-            setGifs(json.data.images.downsized_large.url);
-        }
-        getGif();
-    }, [])
+    // useEffect(() => {
+    //     const getGif = async () => {
+    //         let json = await randomGif();
+    //         setGifs(json.data.images.downsized_large.url);
+    //     }
+    //     getGif();
+    // }, [])
 
 
     return (
@@ -57,8 +60,9 @@ const Welcome = () => {
             <input type="submit" value="Submit"/>
             </form>
       </div>
-      <img src={gifs} alt="gifs" />
-
+      {gifs ? gifs.map(gif => {
+          return <Gifs data={gif}/>
+      }) : null} 
        </>
     )
 

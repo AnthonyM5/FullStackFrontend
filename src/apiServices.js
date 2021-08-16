@@ -17,13 +17,14 @@ export const randomGif = async () => {
 }
 
 export const searchGif = async (data) => {
-    let query = await fetch(DEV_URL + '/gifs', {
+    let query = await fetch(DEV_URL + '/gif', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     });
-    console.log(query)
-
+    let queryJSON = await query.json();
+    return queryJSON
+    
 }
